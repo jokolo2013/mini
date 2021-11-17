@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "969017540992",
+    "project_id": "tctmobileapp-bfb6a",
+    "firebase_url": "https://tctmobileapp-bfb6a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "storage_bucket": "tctmobileapp-bfb6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969017540992:android:44fbce61f9629f3f6ac165",
+        "android_client_info": {
+          "package_name": "com.example.mini"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969017540992-csf2e3fs3202o1iraco409ln2hg062q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAE9Tz-AnKoIsddZXMFGNeDTC1qsftWlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969017540992-csf2e3fs3202o1iraco409ln2hg062q7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
