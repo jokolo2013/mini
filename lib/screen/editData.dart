@@ -30,7 +30,6 @@ class _EditDataState extends State<EditData> {
 //set data to firebase
   final dbfirebase = FirebaseDatabase.instance.reference().child('Food');
 
-
   Future<void> updateData(
     String sKey,
     dynamic db,
@@ -116,6 +115,10 @@ class _EditDataState extends State<EditData> {
     final dbFirebase = FirebaseDatabase.instance.reference().child('Food');
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('แก้ไขรายการ'),
+          backgroundColor: Color(0xFF1E5128),
+        ),
         body: Form(
           key: formKey,
           child: SingleChildScrollView(
@@ -170,7 +173,6 @@ class _EditDataState extends State<EditData> {
       ),
     );
   }
-
 
   Widget filePicture() => ElevatedButton(
         style: ElevatedButton.styleFrom(

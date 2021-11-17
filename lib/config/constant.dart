@@ -12,6 +12,11 @@ const appBarC = Color(0xFF1B5E20);
 const menuC = Color(0xFF1B5E20);
 const backgroundC = Color(0xFF1B5E20);
 const LabelWhC = Colors.white;
+const p2Color = Color(0xFF1E5128);
+
+const whiColor = Color(0xFFffffff);
+
+
 
 class sendOneKey {
   final String key;
@@ -19,7 +24,7 @@ class sendOneKey {
 }
 
 class sendTwoKey3Property {
-  final String sKey,name, details, path;
+  final String sKey, name, details, path;
   const sendTwoKey3Property(
     this.sKey,
     this.name,

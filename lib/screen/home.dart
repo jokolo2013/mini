@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mini/backend/displaytest.dart';
 import 'package:mini/backend/viewMenu.dart';
@@ -14,11 +15,18 @@ class HomePageWidget extends StatefulWidget {
   _HomePageWidgetState createState() => _HomePageWidgetState();
 }
 
+dynamic context;
+Future<void> logout() async {
+  await FirebaseAuth.instance.signOut();
+  print("logout");
+}
+
 class _HomePageWidgetState extends State<HomePageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
+ // final keyIn = ModalRoute.of(context).settings.arguments as setEmail;
   @override
   Widget build(BuildContext context) {
+  //  print(keyIn.email);
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -35,22 +43,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   color: Colors.white,
                 ),
               ),
-            ),
-            ListTile(
-              title: Text(
-                'หน้าแรก',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-              leading: Icon(
-                Icons.home,
-                color: pColor,
-                size: 36,
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, 'Food');
-              },
             ),
             ListTile(
               title: Text(
@@ -75,7 +67,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   fontSize: 24,
                 ),
               ),
-              
               leading: Icon(
                 Icons.food_bank,
                 color: pColor,
@@ -98,7 +89,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 size: 36,
               ),
               onTap: () {
-                //logout();
+                logout();
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, 'Home', arguments: []);
               },
@@ -106,7 +97,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           ],
         ),
       ),
-       key: scaffoldKey,
+      key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Color(0xFF1E5128),
         automaticallyImplyLeading: true,
@@ -224,7 +215,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
               ),
-
               Align(
                 alignment: AlignmentDirectional(0, 0),
                 child: Row(
@@ -243,7 +233,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ],
                 ),
               ),
-                    Display()
+              Display()
             ],
           ),
         ),
