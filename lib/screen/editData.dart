@@ -121,7 +121,7 @@ class _EditDataState extends State<EditData> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                showFile(),
+                showFile(keyIn.path),
                 txtName(keyIn.name),
                 //   txtPrice(),
                 txtStatus(keyIn.details),
@@ -132,7 +132,7 @@ class _EditDataState extends State<EditData> {
                   dbFirebase,
                   names,
                   detailp,
-                  path,
+                  keyIn.path,
                   context,
                 ),
               ],
@@ -200,9 +200,9 @@ class _EditDataState extends State<EditData> {
         ),
       );
 
-  Widget showFile() {
+  Widget showFile(String value) {
     return Container(
-      child: file == null ? Text('Not Found') : Image.file(file),
+      child: Image.network(value),
     );
   }
 

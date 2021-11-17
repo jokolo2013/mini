@@ -12,7 +12,7 @@ class Display extends StatefulWidget {
 }
 
 class _DisplayState extends State<Display> {
-  final dbfirebase = FirebaseDatabase.instance.reference().child('Store');
+  final dbfirebase = FirebaseDatabase.instance.reference().child('Food');
 
   @override
   Widget build(BuildContext context) {
