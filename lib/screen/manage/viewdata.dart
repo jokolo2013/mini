@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mini/config/constant.dart';
 
-
 class ViewData extends StatefulWidget {
   //const ViewData({Key? key}) : super(key: key);
 
@@ -13,8 +12,9 @@ class ViewData extends StatefulWidget {
 }
 
 class _ViewDataState extends State<ViewData> {
+  String keyfood;
   //ประกาศตัวแปรอ้างไปยัง Child ที่ต้องการ
-  final dbfirebase = FirebaseDatabase.instance.reference().child('Store');
+  final dbfirebase = FirebaseDatabase.instance.reference().child('Food');
 
   //Function Edit Data
   Future<void> updateData(String key) async {
@@ -36,6 +36,9 @@ class _ViewDataState extends State<ViewData> {
 
   @override
   Widget build(BuildContext context) {
+    final keyIn = ModalRoute.of(context).settings.arguments as sendOneKey;
+    Size size = MediaQuery.of(context).size;
+    String snapKey;
     return Flexible(
       child: FirebaseAnimatedList(
         query: dbfirebase,
@@ -51,13 +54,6 @@ class _ViewDataState extends State<ViewData> {
                     backgroundColor: pColor,
                   ),
                   title: Text('${snapshot.value['name']}'),
-                  subtitle: Row(
-                    children: [
-                    //  Text("ราคา" + '${snapshot.value['price']}'),
-                      Text("รายละเอียด" + '${snapshot.value['detail']}'),
-                    ],
-                    
-                  ),
                   trailing: Column(
                     children: [
                       Expanded(
@@ -74,7 +70,19 @@ class _ViewDataState extends State<ViewData> {
                         icon: Icon(Icons.edit),
                         onPressed: () {
                           print("Edit");
-                          updateData(snapshot.key);
+                          print(snapshot.key);
+                          print(keyfood);
+                          // updateData(snapshot.key);
+                          Navigator.pushNamed(
+                            context,
+                            'EditData',
+                            arguments: sendTwoKey3Property(
+                              snapshot.key,
+                              snapshot.value['name'],
+                              snapshot.value['detail'],
+                              snapshot.value['path'],
+                            ),
+                          );
                         },
                       ))
                     ],

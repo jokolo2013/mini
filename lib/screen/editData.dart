@@ -1,30 +1,24 @@
-import 'dart:ffi';
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:mini/config/constant.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:path/path.dart' as path;
+import 'package:mini/config/constant.dart';
 import 'package:path/path.dart';
 
-class AddData extends StatefulWidget {
-  //const AddData({Key? key}) : super(key: key);
+class EditData extends StatefulWidget {
+  const EditData({Key key}) : super(key: key);
 
   @override
-  _AddDataState createState() => _AddDataState();
+  _EditDataState createState() => _EditDataState();
 }
 
-class _AddDataState extends State<AddData> {
-
+class _EditDataState extends State<EditData> {
   FirebaseStorage storage = FirebaseStorage.instance;
   String name, imgURL;
-  String names, detail, path;
+  String names, detailp, path;
   final formKey = GlobalKey<FormState>();
-
 
   final picker = ImagePicker();
   File imageFile;
@@ -33,14 +27,55 @@ class _AddDataState extends State<AddData> {
   var file;
   String fileName;
 
-  
+//set data to firebase
+  final dbfirebase = FirebaseDatabase.instance.reference().child('Food');
+
+
+  Future<void> updateData(
+    String sKey,
+    dynamic db,
+    String name,
+    String detail,
+    String path,
+    dynamic context,
+  ) async {
+    try {
+      await db.child(sKey).update({
+        'name': names,
+        'detail': detail,
+        'path': path,
+      }).then((value) {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Edit Group Success'),
+            content: const Text('You Edit Data Success'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, 'OK');
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }).catchError((onError) {
+        print(onError.code);
+        print(onError.massage);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> openCamera() async {
     PickedFile pickedImage;
     var photo = await picker.pickImage(source: ImageSource.camera);
 
     try {
-       fileName = basename(pickedImage.path);
+      fileName = basename(pickedImage.path);
       setState(() {
         if (photo != null) {
           file = File(pickedImage.path);
@@ -70,30 +105,15 @@ class _AddDataState extends State<AddData> {
     print(file);
   }
 
-//set image
-
-//set data to firebase
-  final dbfirebase = FirebaseDatabase.instance.reference().child('Food');
-
-  Future<void> createData() async {
-    try {
-      await dbfirebase.push().set({
-        'name': names,
-        'detail': detail,
-        'path': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png',
-      }).then((value) {
-        print("Sucess");
-      }).catchError((onError) {
-        print(onError.code);
-        print(onError.message);
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
+  dynamic keyfood;
+  final dbFirebase = FirebaseDatabase.instance.reference().child("Food");
+
   Widget build(BuildContext context) {
+    final keyIn =
+        ModalRoute.of(context).settings.arguments as sendTwoKey3Property;
+    Size size = MediaQuery.of(context).size;
+    final dbFirebase = FirebaseDatabase.instance.reference().child('Food');
     return SafeArea(
       child: Scaffold(
         body: Form(
@@ -102,12 +122,19 @@ class _AddDataState extends State<AddData> {
             child: Column(
               children: [
                 showFile(),
-                txtName(),
+                txtName(keyIn.name),
                 //   txtPrice(),
-                txtStatus(),
+                txtStatus(keyIn.details),
                 filePicture(),
                 selectPicture(),
-                btnSubmit(),
+                btnSubmit(
+                  keyIn.sKey,
+                  dbFirebase,
+                  names,
+                  detailp,
+                  path,
+                  context,
+                ),
               ],
             ),
           ),
@@ -116,7 +143,7 @@ class _AddDataState extends State<AddData> {
     );
   }
 
-  Widget txtName() {
+  Widget txtName(String value) {
     return Container(
       margin: EdgeInsets.fromLTRB(10, 20, 20, 10),
       child: TextFormField(
@@ -136,12 +163,14 @@ class _AddDataState extends State<AddData> {
             return 'กรุณาใส่ข้อมูลมากกว่า 2 ตัวอักษร';
           }
         },
-        onSaved: (value) {
+        initialValue: value,
+        onSaved: (String value) {
           names = value;
         },
       ),
     );
   }
+
 
   Widget filePicture() => ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -199,7 +228,7 @@ class _AddDataState extends State<AddData> {
     );
   }
 
-  Widget txtStatus() {
+  Widget txtStatus(String value) {
     return Container(
       margin: EdgeInsets.fromLTRB(10, 20, 20, 10),
       child: TextFormField(
@@ -216,6 +245,7 @@ class _AddDataState extends State<AddData> {
           icon: Icon(Icons.description),
           hintText: 'กรอกวัตถุดิบ และ วิธีทำอาหาร',
         ),
+        initialValue: value,
         validator: (value) {
           if (value.isEmpty) {
             return 'กรุณากรอกรายละเอียด';
@@ -223,12 +253,20 @@ class _AddDataState extends State<AddData> {
             return 'รายละเอียดต้องมากกว่า 1 ตัวอักษร';
           }
         },
-        onChanged: (value) => detail = value,
+        onSaved: (String value) => detailp = value,
       ),
     );
   }
 
-  Widget btnSubmit() => ElevatedButton(
+  Widget btnSubmit(
+    String sKey,
+    dynamic db,
+    String name,
+    String detail,
+    String path,
+    dynamic context,
+  ) =>
+      ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: pColor,
         ),
@@ -239,7 +277,14 @@ class _AddDataState extends State<AddData> {
             print(detail);
             print(file);
             print(fileName);
-            createData();
+            updateData(
+              sKey,
+              db,
+              names,
+              detailp,
+              path,
+              context,
+            );
             formKey.currentState.reset();
           }
         },
