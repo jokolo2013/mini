@@ -16,8 +16,6 @@ const p2Color = Color(0xFF1E5128);
 
 const whiColor = Color(0xFFffffff);
 
-
-
 class sendOneKey {
   final String key;
   const sendOneKey(this.key);
@@ -32,3 +30,14 @@ class sendTwoKey3Property {
     this.path,
   );
 }
+
+class sendDetail {
+  final String skey, name, details, path;
+  const sendDetail(this.skey, this.name, this.details, this.path);
+}
+
+class getEmail {
+  final String email;
+  const getEmail(this.email);
+}
+

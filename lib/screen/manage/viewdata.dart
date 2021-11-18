@@ -49,9 +49,8 @@ class _ViewDataState extends State<ViewData> {
               child: Card(
                 elevation: 5,
                 child: ListTile(
-                  leading: CircleAvatar(
+                  leading: Card(
                     child: Image.network('${snapshot.value['path']}'),
-                    backgroundColor: pColor,
                   ),
                   title: Text('${snapshot.value['name']}'),
                   trailing: Column(

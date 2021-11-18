@@ -13,6 +13,7 @@ class FirebaseRegister extends StatefulWidget {
 
 class _FirebaseRegisterState extends State<FirebaseRegister> {
   var name, surname, email, password;
+  String fullname;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -29,66 +30,83 @@ class _FirebaseRegisterState extends State<FirebaseRegister> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-Image.asset("assets/images/logo.png",
+                Image.asset(
+                  "assets/images/logo.png",
                   width: 200,
                   height: 200,
                 ),
- Text('สมัครสมาชิก', style: TextStyle(color: whiColor,
+                Text(
+                  'สมัครสมาชิก',
+                  style: TextStyle(
+                    color: whiColor,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
-                ),    
- SizedBox( height: 60,),
-                   Text(
-                       'ชื่อ                                                    ',
-                       
-                       textAlign: TextAlign.left,
-                         style: TextStyle(
-                         color: whiColor,
-                           fontSize: 25,
-                          // fontWeight: FontWeight.bold,
-                          ),
-                       ),           
-                txtName(),
-                 SizedBox( height: 10,),
-                 Text(
-                       'นามสกุล                                               ', 
-                       textAlign: TextAlign.left,
-                         style: TextStyle(
-                         color: whiColor,
-                           fontSize: 25,
-                        //   fontWeight: FontWeight.bold,
-                          ),
-                       ),
-                txtSurname(),
-                SizedBox( height: 10,),
+                ),
+                SizedBox(
+                  height: 60,
+                ),
                 Text(
-                       'Email                                                  ', 
-                       textAlign: TextAlign.left,
-                         style: TextStyle(
-                         color: whiColor,
-                           fontSize: 25,
-                       //    fontWeight: FontWeight.bold,
-                          ),
-                       ),
+                  'ชื่อ                                                    ',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: whiColor,
+                    fontSize: 25,
+                    // fontWeight: FontWeight.bold,
+                  ),
+                ),
+                txtName(),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'นามสกุล                                               ',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: whiColor,
+                    fontSize: 25,
+                    //   fontWeight: FontWeight.bold,
+                  ),
+                ),
+                txtSurname(),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Email                                                  ',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: whiColor,
+                    fontSize: 25,
+                    //    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 txtMail(),
-                                SizedBox( height: 10,),
-                                 Text(
-                       'รหัสผ่าน                                              ', 
-                       textAlign: TextAlign.left,
-                         style: TextStyle(
-                         color: whiColor,
-                           fontSize: 25,
-                      //     fontWeight: FontWeight.bold,
-                          ),
-                       ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'รหัสผ่าน                                              ',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: whiColor,
+                    fontSize: 25,
+                    //     fontWeight: FontWeight.bold,
+                  ),
+                ),
                 txtPassword(),
-                SizedBox(height: 15,), 
+                SizedBox(
+                  height: 15,
+                ),
                 txtConPassword(),
-                SizedBox(height: 15,), 
+                SizedBox(
+                  height: 15,
+                ),
                 btnSubmit(),
-                SizedBox(height: 15,), 
-                 ElevatedButton(
+                SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: p2Color,
                     //padding: EdgeInsets.fromLTRB(130, 12, 130, 12),
@@ -105,7 +123,9 @@ Image.asset("assets/images/logo.png",
                     Navigator.pushNamed(context, 'Home');
                   },
                 ),
-                       SizedBox(height: 15,), 
+                SizedBox(
+                  height: 15,
+                ),
               ],
             ),
           ),
@@ -123,13 +143,17 @@ Image.asset("assets/images/logo.png",
           color: pColor,
         ),
         decoration: InputDecoration(
-           border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: new BorderSide(
-                          ),),
-                          fillColor: Colors.white,filled: true,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: new BorderSide(),
+          ),
+          fillColor: Colors.white,
+          filled: true,
           labelText: "Name",
-          icon: Icon(Icons.account_circle_outlined,color: whiColor,),
+          icon: Icon(
+            Icons.account_circle_outlined,
+            color: whiColor,
+          ),
           hintText: 'Input your name',
         ),
         validator: (value) {
@@ -155,13 +179,14 @@ Image.asset("assets/images/logo.png",
           color: pColor,
         ),
         decoration: InputDecoration(
-           border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: new BorderSide(
-                          ),),
-                           fillColor: Colors.white,filled: true,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: new BorderSide(),
+          ),
+          fillColor: Colors.white,
+          filled: true,
           labelText: "Surname",
-          icon: Icon(Icons.account_circle_rounded,color: whiColor),
+          icon: Icon(Icons.account_circle_rounded, color: whiColor),
           hintText: 'Input your Surname',
         ),
         validator: (value) {
@@ -188,14 +213,17 @@ Image.asset("assets/images/logo.png",
           color: pColor,
         ),
         decoration: InputDecoration(
-          
-                             border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: new BorderSide(
-                          ),),
-                          fillColor: Colors.white,filled: true,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: new BorderSide(),
+          ),
+          fillColor: Colors.white,
+          filled: true,
           labelText: "Email",
-          icon: Icon(Icons.markunread_outlined,color: whiColor,),
+          icon: Icon(
+            Icons.markunread_outlined,
+            color: whiColor,
+          ),
           hintText: 'Input your Email',
         ),
         validator: (value) {
@@ -222,13 +250,17 @@ Image.asset("assets/images/logo.png",
           color: pColor,
         ),
         decoration: InputDecoration(
-           border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: new BorderSide(
-                          ),),
-                           fillColor: Colors.white,filled: true,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: new BorderSide(),
+          ),
+          fillColor: Colors.white,
+          filled: true,
           labelText: "Password",
-          icon: Icon(Icons.password_outlined,color: whiColor,),
+          icon: Icon(
+            Icons.password_outlined,
+            color: whiColor,
+          ),
           hintText: 'Input your Password',
         ),
         validator: (value) {
@@ -253,11 +285,12 @@ Image.asset("assets/images/logo.png",
           color: pColor,
         ),
         decoration: InputDecoration(
-            border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: new BorderSide(
-                          ),),
-                          fillColor: Colors.white,filled: true,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: new BorderSide(),
+          ),
+          fillColor: Colors.white,
+          filled: true,
           labelText: "Current Password",
           icon: Icon(Icons.password_outlined),
           hintText: 'Input your Password',
@@ -281,13 +314,15 @@ Image.asset("assets/images/logo.png",
           primary: p2Color,
           padding: EdgeInsets.fromLTRB(170, 12, 170, 12),
           shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.50),
-          side: BorderSide(color: whiColor)),
+              borderRadius: BorderRadius.circular(20.50),
+              side: BorderSide(color: whiColor)),
         ),
         onPressed: () {
           if (formKey.currentState.validate()) {
             formKey.currentState.save();
-            registerFirebase();
+            fullname = name + ' '+ surname;
+            print(fullname);
+            //registerFirebase();
           }
         },
         child: Text("Submit"),
@@ -296,20 +331,21 @@ Image.asset("assets/images/logo.png",
     try {
       //ส่งข้อมูล Email และ password to firebase
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password)
+          .createUserWithEmailAndPassword(
+               email: email, password: password)
           .then((value) {
-           MaterialPageRoute materialPageRoute =
-                MaterialPageRoute(builder: (BuildContext context) => FirebaseLogin());
-          Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+            builder: (BuildContext context) => FirebaseLogin());
+        Navigator.of(context).pushAndRemoveUntil(
             materialPageRoute, (Route<dynamic> route) => false);
-          })
-          .catchError((onError) {
+        print(materialPageRoute);
+      }).catchError((onError) {
         print(onError);
         var msg = '${onError}';
         showAlert(msg);
       });
     } catch (e) {
-      //print(e);
+      print(e);
     }
   }
 

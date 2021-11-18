@@ -28,12 +28,16 @@ class _DisplayState extends State<Display> {
             return InkWell(
               onTap: () {
                 Navigator.pushNamed(context, 'Food',
-                    arguments: sendOneKey(snapshot.key.toString()));
-                print(snapshot.key.toString());
+                    arguments: sendDetail(
+                      snapshot.key,
+                      snapshot.value['name'],
+                      snapshot.value['detail'],
+                      snapshot.value['path'],
+                    ));
               },
               //padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
               child: SingleChildScrollView(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,

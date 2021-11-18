@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mini/config/constant.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:mini/screen/home.dart';
 
 class FirebaseLogin extends StatefulWidget {
-  const FirebaseLogin({Key  key}) : super(key: key);
+  const FirebaseLogin({Key key}) : super(key: key);
 
   @override
   _FirebaseLoginState createState() => _FirebaseLoginState();
@@ -20,9 +21,10 @@ class _FirebaseLoginState extends State<FirebaseLogin> {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
         print('Success');
-        MaterialPageRoute materialPageRoute =
-                MaterialPageRoute(builder: (BuildContext context) => HomePageWidget());
-          Navigator.of(context).pushAndRemoveUntil(
+        print(value);
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+            builder: (BuildContext context) => HomePageWidget());
+        Navigator.of(context).pushAndRemoveUntil(
             materialPageRoute, (Route<dynamic> route) => false);
       }).catchError((onError) {
         print(onError);
@@ -46,85 +48,62 @@ class _FirebaseLoginState extends State<FirebaseLogin> {
                 SizedBox(
                   height: size.height * 0.05,
                 ),
-                   Image.asset(
-                "assets/images/logo.png",
-                width: size.width * 0.5,
-            
-            
-            ),
+                Image.asset(
+                  "assets/images/logo.png",
+                  width: size.width * 0.5,
+                ),
                 Text(
                   'เข้าสู่ระบบ',
                   style: TextStyle(fontSize: 40, color: whiColor),
                 ),
-                
-
                 SizedBox(
                   height: size.height * 0.08,
-                  
-                  
                 ),
-
                 Container(
                   color: whiColor,
                   width: size.width * 0.9,
-                  
- 
-                  
-               /*   child:  Text('Email',
+
+                  /*   child:  Text('Email',
                      textAlign: TextAlign.right, 
                      
                 style: TextStyle(fontSize: 25, color: whiColor,)
                 
                 ),);*/
-               
-                  child: TextFormField(  
-                    style: TextStyle(color: Colors.black, fontSize: 20 ,
-                    
-                  //  decorationColor: Colors.white,
-                  //  backgroundColor: Colors.white
-                    ),               
-                    
-                  
-                    decoration: InputDecoration( 
 
+                  child: TextFormField(
+                    style: TextStyle(
+                      color: Colors.black, fontSize: 20,
 
-                       
+                      //  decorationColor: Colors.white,
+                      //  backgroundColor: Colors.white
+                    ),
+                    decoration: InputDecoration(
                       icon: Icon(
                         Icons.email,
                         color: pColor,
                         size: size.height * 0.05,
-                        
                       ),
                       hintText: "Email",
-                      
                     ),
-
-                    
                     onSaved: (value) {
                       email = value.trim();
                     },
                   ),
                 ),
-
-                
                 SizedBox(
                   height: size.height * 0.04,
                 ),
                 Container(
                   width: size.width * 0.9,
-
                   color: whiColor,
-
                   child: TextFormField(
                     style: TextStyle(color: Colors.black, fontSize: 20),
                     obscureText: true,
                     decoration: InputDecoration(
-                      
-                      icon: Icon(  
+                      icon: Icon(
                         Icons.lock,
                         color: pColor,
                         size: size.height * 0.05,
-                        
                       ),
                       hintText: "Password",
                     ),
@@ -143,48 +122,63 @@ class _FirebaseLoginState extends State<FirebaseLogin> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.5),
                         side: BorderSide(color: whiColor)),
-                    onPressed: () {
+                    onPressed: () async {
                       formKey.currentState.save();
-                      checkUser();
+                      print(formKey.currentContext);
+                      try {
+                        await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: email, password: password)
+                            .then((value) {
+                          print('Success');
+                          print(value);
+                           MaterialPageRoute materialPageRoute =
+                              MaterialPageRoute(
+                                   builder: (BuildContext context) =>
+                                       HomePageWidget());
+                           Navigator.of(context).pushAndRemoveUntil(
+                               materialPageRoute,
+                              (Route<dynamic> route) => false);
+                        }).catchError((onError) {
+                          print(onError);
+                        });
+                      } catch (e) {
+                        print(e);
+                      }
+                      //checkUser();
                     },
                     color: p2Color,
                     textColor: Colors.white,
                     child: Text("login".toUpperCase(),
                         style: TextStyle(fontSize: 16)),
                   ),
-                  
                 ),
-                SizedBox(height: size.height * 0.05,),
-
-
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
                 Container(
-                 // width: size.width * 0.6,
-                 // height: size.height * 0.04,
+                  // width: size.width * 0.6,
+                  // height: size.height * 0.04,
                   child: RaisedButton(
-                  /*  shape: RoundedRectangleBorder(
+                    /*  shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.5),
                         side: BorderSide(color: whiColor)),*/
                     onPressed: () {
-                        Navigator.pushNamed(context, 'Register');
-                  },
-                    
+                      Navigator.pushNamed(context, 'Register');
+                    },
                     color: p2Color,
                     textColor: Colors.white,
-                    child: Text("ถ้ายังไม่มีบัญชีสมัครได้ที่นี้ ?".toUpperCase(),
-                        style: TextStyle(fontSize: 16,color: sColor,)),
+                    child:
+                        Text("ถ้ายังไม่มีบัญชีสมัครได้ที่นี้ ?".toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: sColor,
+                            )),
                   ),
                 )
-
-                
-                
-
-
               ],
-              
             ),
-            
           ),
-          
         ),
       ),
     );
