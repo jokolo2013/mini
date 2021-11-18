@@ -70,14 +70,16 @@ class _EditDataState extends State<EditData> {
   }
 
   Future<void> openCamera() async {
-    PickedFile pickedImage;
+    var picker = ImagePicker();
     var photo = await picker.pickImage(source: ImageSource.camera);
 
     try {
-      fileName = basename(pickedImage.path);
+      fileName = basename(photo.path);
       setState(() {
         if (photo != null) {
-          file = File(pickedImage.path);
+          file = File(photo.path);
+          print(fileName);
+          print(file);
         } else {
           print('No image selected.');
         }
@@ -92,9 +94,12 @@ class _EditDataState extends State<EditData> {
     var photo = await picker.pickImage(source: ImageSource.gallery);
 
     try {
+      fileName = basename(photo.path);
       setState(() {
         if (photo != null) {
           file = File(photo.path);
+          print(fileName);
+          print(file);
         } else {
           print('No image selected.');
         }

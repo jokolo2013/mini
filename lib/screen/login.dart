@@ -166,7 +166,6 @@ class _FirebaseLoginState extends State<FirebaseLogin> {
                     onPressed: () {
                       Navigator.pushNamed(context, 'Register');
                     },
-                    color: p2Color,
                     textColor: Colors.white,
                     child:
                         Text("ถ้ายังไม่มีบัญชีสมัครได้ที่นี้ ?".toUpperCase(),

@@ -322,10 +322,10 @@ class _FirebaseRegisterState extends State<FirebaseRegister> {
             formKey.currentState.save();
             fullname = name + ' '+ surname;
             print(fullname);
-            //registerFirebase();
+            registerFirebase();
           }
         },
-        child: Text("Submit"),
+        child: Text("Register"),
       );
   Future<void> registerFirebase() async {
     try {
@@ -380,4 +380,5 @@ class _FirebaseRegisterState extends State<FirebaseRegister> {
           );
         });
   }
+  
 }

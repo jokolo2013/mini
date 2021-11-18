@@ -8,7 +8,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:mini/config/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
 
 class AddData extends StatefulWidget {
@@ -19,12 +18,10 @@ class AddData extends StatefulWidget {
 }
 
 class _AddDataState extends State<AddData> {
-
   FirebaseStorage storage = FirebaseStorage.instance;
   String name, imgURL;
   String names, detail, path;
   final formKey = GlobalKey<FormState>();
-
 
   final picker = ImagePicker();
   File imageFile;
@@ -33,23 +30,20 @@ class _AddDataState extends State<AddData> {
   var file;
   String fileName;
 
-  
-
   Future<void> openCamera() async {
-    PickedFile pickedImage;
+    var picker = ImagePicker();
     var photo = await picker.pickImage(source: ImageSource.camera);
 
     try {
-       fileName = basename(pickedImage.path);
       setState(() {
+        fileName = basename(photo.path);
         if (photo != null) {
-          file = File(pickedImage.path);
+          file = File(photo.path);
         } else {
           print('No image selected.');
         }
       });
     } catch (e) {}
-
     print(file);
   }
 
@@ -58,6 +52,7 @@ class _AddDataState extends State<AddData> {
     var photo = await picker.pickImage(source: ImageSource.gallery);
 
     try {
+      fileName = basename(photo.path);
       setState(() {
         if (photo != null) {
           file = File(photo.path);
@@ -71,6 +66,39 @@ class _AddDataState extends State<AddData> {
   }
 
 //set image
+  Future<void> uploadimage(
+    dynamic context,
+    dynamic fileName,
+    dynamic db,
+  ) async {
+    if (file != null) {
+      try {
+        TaskSnapshot snapshot =
+            await storage.ref().child("files/$fileName").putFile(file);
+        if (snapshot.state == TaskState.success) {
+          final String downloadUrl = await snapshot.ref.getDownloadURL();
+          urll = downloadUrl;
+          print(downloadUrl);
+          await dbfirebase.push().set({
+            'name': names,
+            'detail': detail,
+            'path': urll,
+          }).then((value) {
+            print(urll);
+            print("Sucess");
+          }).catchError((onError) {
+            print(onError.code);
+            print(onError.message);
+          });
+        } else {
+          print('Error from image repo ${snapshot.state.toString()}');
+          throw ('This file is not an image');
+        }
+      } on FirebaseException catch (error) {
+        print(error);
+      }
+    }
+  }
 
 //set data to firebase
   final dbfirebase = FirebaseDatabase.instance.reference().child('Food');
@@ -80,8 +108,9 @@ class _AddDataState extends State<AddData> {
       await dbfirebase.push().set({
         'name': names,
         'detail': detail,
-        'path': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png',
+        'path': urll,
       }).then((value) {
+        print(urll);
         print("Sucess");
       }).catchError((onError) {
         print(onError.code);
@@ -239,7 +268,8 @@ class _AddDataState extends State<AddData> {
             print(detail);
             print(file);
             print(fileName);
-            createData();
+            uploadimage('', fileName, dbfirebase);
+            //createData();
             formKey.currentState.reset();
           }
         },

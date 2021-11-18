@@ -4,6 +4,7 @@ import 'package:mini/screen/editData.dart';
 import 'package:mini/screen/food.dart';
 import 'package:mini/screen/home.dart';
 import 'package:mini/screen/login.dart';
+import 'package:mini/screen/manage/viewdata.dart';
 import 'package:mini/screen/managerfood.dart';
 import 'package:mini/screen/register.dart';
 import 'package:mini/screen/user.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePageWidget(), routes: {
+    return MaterialApp(home: FirebaseLogin(), routes: {
       'Food': (context) => FoodDetailWidget(),
       'User': (context) => UserDetailWidget(),
       'Manage': (context) => Managerfood(),

@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mini/config/constant.dart';
@@ -36,6 +37,7 @@ class _ViewDataState extends State<ViewData> {
 
   @override
   Widget build(BuildContext context) {
+    final dbfirebase = FirebaseDatabase.instance.reference().child('Food');
     final keyIn = ModalRoute.of(context).settings.arguments as sendOneKey;
     Size size = MediaQuery.of(context).size;
     String snapKey;
@@ -44,8 +46,7 @@ class _ViewDataState extends State<ViewData> {
         query: dbfirebase,
         itemBuilder: (context, snapshot, animetion, index) {
           return Container(
-            child: Padding(
-              padding: EdgeInsets.all(4.0),
+            child: Container(
               child: Card(
                 elevation: 5,
                 child: ListTile(
@@ -57,16 +58,56 @@ class _ViewDataState extends State<ViewData> {
                     children: [
                       Expanded(
                         child: IconButton(
-                          icon: Icon(Icons.delete),
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          icon: Icon(
+                            Icons.delete,
+                            size: 15,
+                          ),
                           onPressed: () {
-                            print("Delete Data");
-                            dbfirebase.child(snapshot.key).remove();
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Alert Delate Data'),
+                                content: const Text(
+                                    'Do You Want Delate Data press Ok for Delate'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  //NOTE ปุ่ม ลบ
+                                  TextButton(
+                                    onPressed: () => {
+                                      if (snapshot.value['path'] !=
+                                          'null')
+                                        {
+                                          FirebaseStorage.instance
+                                              .refFromURL(
+                                                  snapshot.value['path'])
+                                              .delete(),
+                                          Navigator.pop(context, 'OK'),
+                                          dbfirebase
+                                              .child(snapshot.key)
+                                              .remove(),
+                                              print(snapshot.key)
+                                        }
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                         ),
                       ),
                       Expanded(
                           child: IconButton(
-                        icon: Icon(Icons.edit),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        icon: Icon(
+                          Icons.edit,
+                          size: 15,
+                        ),
                         onPressed: () {
                           print("Edit");
                           print(snapshot.key);
